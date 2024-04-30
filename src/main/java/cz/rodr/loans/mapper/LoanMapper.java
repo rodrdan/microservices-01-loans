@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoanMapper {
 
+    private LoanMapper() {
+        // prevent instantiation
+    }
+
     public static LoanDto mapToLoanDto(Loan loan, LoanDto loanDto) {
         loanDto.setMobileNumber(loan.getMobileNumber());
         loanDto.setLoanNumber(loan.getLoanNumber());

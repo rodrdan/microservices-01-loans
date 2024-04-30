@@ -1,5 +1,6 @@
 package cz.rodr.loans.exception;
 
+import cz.rodr.loans.dto.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -45,7 +46,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // this will handle @Valid exception when @RequestBody has invalid input
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -74,9 +74,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
-
-
-
 }
