@@ -32,14 +32,31 @@ public class LoanServiceImpl implements ILoanService {
     @Override
     public LoanDto getLoanDetails(String mobileNumber) {
         Loan loan = loanRepository.findByMobileNumber(mobileNumber).orElseThrow(() ->
-                new LoanNotFoundException("Loan with mobile number " + mobileNumber + " not found."));
+                new LoanNotFoundException("mobile number", mobileNumber));
         return LoanMapper.mapToLoanDto(loan, new LoanDto());
+    }
+
+    @Override
+    public boolean updateLoan(LoanDto loanDto) {
+        Loan loan = loanRepository.findByLoanNumber(loanDto.getLoanNumber()).orElseThrow(() ->
+                new LoanNotFoundException("loan number", loanDto.getLoanNumber()));
+        LoanMapper.mapToLoan(loanDto, loan);
+        loanRepository.save(loan);
+        return true;
+    }
+
+    @Override
+    public boolean deleteLoan(String mobileNumber) {
+        Loan loan = loanRepository.findByMobileNumber(mobileNumber).orElseThrow(() ->
+                new LoanNotFoundException("mobile number", mobileNumber));
+        loanRepository.delete(loan);
+        return true;
     }
 
     private Loan createNewLoan(String mobileNumber) {
         Loan newLoan = new Loan();
         newLoan.setMobileNumber(mobileNumber);
-        long randomNumber = 1_000_000_000_000L + new Random().nextInt(900000000);
+        long randomNumber = 100_000_000_000L + new Random().nextInt(900000000);
         newLoan.setLoanNumber(Long.toString(randomNumber));
         newLoan.setLoanType(LoanConstants.HOME_LOAN);
         newLoan.setTotalLoan(LoanConstants.NEW_LOAN_LIMIT);
